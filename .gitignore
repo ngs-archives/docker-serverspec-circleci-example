@@ -1,0 +1,3 @@
+/build/*
+Dockerfile
+/docker/serverspec/vendor/bundle

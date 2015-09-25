@@ -1,0 +1,15 @@
+FROM ubuntu:14.04
+MAINTAINER Atsushi Nagase<a@ngs.io>
+
+RUN \
+  apt-get update -y && \
+  apt-get install -y --no-install-recommends curl supervisor
+
+RUN echo <%= `cat docker/files/etc/supervisor/supervisord.conf`.inspect.gsub(/\$/, "\\$") %> > /etc/supervisor/supervisord.conf
+RUN echo <%= `cat docker/files/etc/init.d/server`.inspect.gsub(/\$/, "\\$") %> > /etc/init.d/server
+RUN chmod +x /etc/init.d/server
+
+EXPOSE 8080
+CMD ["/usr/bin/supervisord", "-n"]
+
+ADD build/server-linux /usr/bin/server

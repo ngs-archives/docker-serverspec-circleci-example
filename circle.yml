@@ -1,0 +1,40 @@
+machine:
+  ruby:
+    version: 2.2.2
+  services:
+    - docker
+  environment:
+    DOCKER_REPO: quay.io/atsnngs/docker-serverspec-circleci-example
+    SPEC_OPTS: "--format documentation --color --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec/rspec.xml"
+
+dependencies:
+  override:
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3:
+        pwd: docker/serverspec
+    - mkdir -p ~/.docker && echo $DOCKERCFG > ~/.dockercfg
+    - docker pull $DOCKER_REPO; exit 0
+    - go build -o build/server-linux src/server.go:
+        environment:
+          GOARCH: amd64
+          GOOS: linux
+    - erb Dockerfile.erb > Dockerfile
+    - docker build -t $DOCKER_REPO .
+  cache_directories:
+    - docker/serverspec/vendor/bundle
+general:
+  artifacts:
+    - build
+test:
+  pre:
+    - docker run --name serverspec -p 8080:8080 -d $DOCKER_REPO && sleep 5
+  override:
+    - bundle exec rspec:
+        pwd: docker/serverspec
+        environment:
+          DOCKER_CONTAINER: serverspec
+
+deployment:
+  master:
+    branch: 'master'
+    commands:
+      - docker push $DOCKER_REPO
