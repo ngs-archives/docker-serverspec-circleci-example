@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rspec'
+gem 'lxc-extra', github: 'ranjib/lxc-extra' if RUBY_PLATFORM.match(/linux/)
 gem 'serverspec'
 gem 'docker-api'
 gem 'rspec_junit_formatter', git: 'git@github.com:circleci/rspec_junit_formatter.git'
