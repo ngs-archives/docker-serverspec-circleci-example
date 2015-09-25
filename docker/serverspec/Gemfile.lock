@@ -20,8 +20,7 @@ GEM
     multi_json (1.11.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
-    net-telnet (0.1.1)
+    net-ssh (3.0.1)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -38,17 +37,14 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    serverspec (2.24.1)
+    serverspec (2.8.2)
       multi_json
       rspec (~> 3.0)
       rspec-its
-      specinfra (~> 2.43)
-    sfl (2.2)
-    specinfra (2.43.8)
+      specinfra (~> 2.12)
+    specinfra (2.12.7)
       net-scp
-      net-ssh (~> 2.7)
-      net-telnet
-      sfl
+      net-ssh
 
 PLATFORMS
   ruby
@@ -58,6 +54,7 @@ DEPENDENCIES
   rspec
   rspec_junit_formatter!
   serverspec
+  specinfra (= 2.12.7)
 
 BUNDLED WITH
    1.10.6
